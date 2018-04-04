@@ -1,5 +1,5 @@
 Overview
-In this document, you will be taught how to set up the hardware and software as well as using different ways to connect to the Up Square Grove board. Then, you will be shown step by step how to build an end-to-end IoT solution using Up Square Grove IoT dev kit to connect to the Google Cloud Platform. Lastly, you will learn how to create charts to display sensor’s data on stackdriver dashboard. 
+In this document, you will be taught how to set up the hardware and software as well as using different ways to connect to the Up Square Grove board. Then, you will be shown step by step on how to build an end-to-end IoT solution using Up Square Grove IoT dev kit with the Google Cloud Platform. Lastly, you will learn how to create charts to display sensor data on the stackdriver dashboard. 
 	 	 	
 
 Audience
@@ -8,9 +8,14 @@ This document is intended for developers who will be working on connecting the P
 Introduction to IoT
 
 IoT is the network of physical devices, vehicles, cameras, alarms, home appliances and other items embedded with electronics, software, sensors, actuators, and network connectivity which enables these objects to connect and exchange data through the Internet.
-IoT Solution with Up Square Grove Dev Kit
-In this development, we connect Up Square Grove board to the Google Cloud Platform. 
 
+Architectural diagram
+
+
+IoT Solution with Up Square Grove Dev Kit
+In this development, we connect Up Square Grove board to the Google Cloud Platform. Use the python scripts created to send data for rotary, light and temperature & humidity sensors to the Pub/Sub every two seconds. The Cloud Function Pub/Sub trigger picks up the message data that only contain sensor data and forward them to the Stackdriver Storage. From the Stackdriver page, we can create charts to show sensor data on graphs based on sensor data and time.
+
+For LCD, button ,and led modules, only data will be sent to PubSub.
 Components
 
 Up Square Grove IoT Dev Kit
@@ -85,7 +90,7 @@ Now we can go back to the main menu by selecting Exit and pressing Enter. Option
 Plug the UP² board to its power supply and plug the power supply into an electrical outlet.
 Note: If you need to turn off your board, you can do so by pressing the small white button next to the blue LED, or you can simply unplug the power cable.
 
-Sett Up Software for the Up Square Board
+Set Up Software for the Up Square Board
    Boot up the Ubuntu OS
 After the board is powered and boot up, you should see the login screen below.
 
@@ -112,15 +117,7 @@ Set up the IoT Projects
 
    Pre-requisite
 
-Before setting up the project, an account with Google is needed to log into the Google Cloud Platform. Please register an account with Google if you don’t have it. Once an account is created successfully, log into the Google Cloud Platform and create a service account, a public and private key pair, a Pub/Sub topic, a Pub/Sub subscription, a device registry, a device.
-
-Create Service account
-1) Open the Service Accounts page in the GCP Console.
-2) Click Select a project.
-3) Select your project and click Open.
-4) Click Create Service Account.
-5) Enter a service account name, select a role you wish to grant to the service account, and choose the “Furnish a new private key” option to generate a service account JSON file. Later on this file will be used in connecting to the Google Cloud for authentication so that the project can use various Google Cloud API sets. Make sure you place this file in the folder “PemFiles”.
-6) Click on Create to complete. After you create a service account, grant one or more roles to the service account to access the Google Cloud Platform.
+Before setting up the project, an account with Google is needed to log into the Google Cloud Platform. Please register an account with Google if you don’t have it. Once an account is created successfully, log into the Google Cloud Platform and create a public and private key pair, a Pub/Sub topic, a Pub/Sub subscription, a device registry, a device.
 
 Generate RSA Public and Private keys
 
@@ -212,6 +209,7 @@ Go to the Google Cloud Platform Console by clicking the following button:
 Go to the GCP Console
 Select the project you want to enable for Stackdriver in the drop-down menu at the top of the page. Alternatively, create a new GCP Console project to enable.
 In the GCP Console navigation menu, select Stackdriver > Monitoring to go to the Stackdriver Monitoring Console. You should see the following dialog, with your project's name inserted:
+
 
 If you do not see this dialog and instead see the Stackdriver home page for your project, then your project has already been enabled for Stackdriver and you are finished.
 Select Create a new Stackdriver account and click Continue. You see the following dialog:

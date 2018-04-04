@@ -31,7 +31,7 @@ cloudApisObj = CloudApis()
 def publish_message():
    '''
     Description: 
-       This function take an image and publish to the google cloud Pub/Sub.
+       This function publish led data to the google cloud Pub/Sub.
     Args: 
        None
     Returns:

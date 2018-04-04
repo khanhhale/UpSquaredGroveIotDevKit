@@ -31,7 +31,7 @@ cloudApisObj = CloudApis()
 def publish_message():
    '''
     Description: 
-       This function take an sensor data and publish to the google cloud Pub/Sub.
+       This function publish tempurature and humidity data taken from sensors to the google cloud Pub/Sub.
     Args: 
        None
     Returns:
