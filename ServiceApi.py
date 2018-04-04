@@ -30,7 +30,7 @@ class ServiceApi(object):
     parser.add_argument('--algorithm', choices=('RS256','ES256','RS256-X509'),required=True, help='The encryption algorithm to use to generate the JWT.')
     parser.add_argument('--num_messages',type=int, default=5, help='Maximum number of messages to publish.')
     parser.add_argument('--message_type',choices=('event', 'state'),default='event', required=False, help=('Indicates whether the message to be published is a telemetry event or a device state message.'))
-    parser.add_argument('--credential', required=True, help=('Path to Service Account json file'))
+    parser.add_argument('--credential', required=False, help=('Path to Service Account json file'))
     parser.add_argument('--message_data_type', required=False, help=('Message data type')) 
     parser.add_argument('--message', default='Please use the --message argument to publish the message', required=False, help=('The message to publish')) 
     return parser.parse_args()

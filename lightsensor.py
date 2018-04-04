@@ -21,7 +21,7 @@ sys.setdefaultencoding('utf8')
 
 serviceApiObj = ServiceApi() 
 args = serviceApiObj.parse_command_line_args()
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]=args.credential  
+#os.environ["GOOGLE_APPLICATION_CREDENTIALS"]=args.credential  
  
 utilityObj = Utility()   
 cloudApisObj = CloudApis()

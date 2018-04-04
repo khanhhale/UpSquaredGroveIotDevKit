@@ -23,7 +23,7 @@ from upm import pyupm_jhd1313m1 as lcd
 
 serviceApiObj = ServiceApi() 
 args = serviceApiObj.parse_command_line_args()
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]=args.credential  
+#os.environ["GOOGLE_APPLICATION_CREDENTIALS"]=args.credential  
  
 utilityObj = Utility()   
 cloudApisObj = CloudApis()
@@ -48,12 +48,12 @@ def publish_message():
  
       myLcd.setColor(255, 0, 0)
 
-      textHigh = "Welcome To"
+      textHigh = "Welcome"
       textLow = "Google iot"  
 
       myLcd.write(textHigh)
       myLcd.setCursor(1,2)
-      myLcd.write(textLow)
+      myLcd.write("text")
       
       args.message = textHigh + " " + textLow
  
