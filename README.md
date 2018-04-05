@@ -1,21 +1,7 @@
-Overview
-In this document, you will be taught how to set up the hardware and software as well as using different ways to connect to the Up Square Grove board. Then, you will be shown step by step on how to build an end-to-end IoT solution using Up Square Grove IoT dev kit with the Google Cloud Platform. Lastly, you will learn how to create charts to display sensor data on the stackdriver dashboard. 
-	 	 	
-
-Audience
-
-This document is intended for developers who will be working on connecting the Pylon Camera to the Google Cloud through the Internet using IoT solution.
-Introduction to IoT
-
-IoT is the network of physical devices, vehicles, cameras, alarms, home appliances and other items embedded with electronics, software, sensors, actuators, and network connectivity which enables these objects to connect and exchange data through the Internet.
-
-Architectural diagram
-
-
 IoT Solution with Up Square Grove Dev Kit
 In this development, we connect Up Square Grove board to the Google Cloud Platform. Use the python scripts created to send data for rotary, light and temperature & humidity sensors to the Pub/Sub every two seconds. The Cloud Function Pub/Sub trigger picks up the message data that only contain sensor data and forward them to the Stackdriver Storage. From the Stackdriver page, we can create charts to show sensor data on graphs based on sensor data and time.
 
-For LCD, button ,and led modules, only data will be sent to PubSub.
+For LCD, button, and led modules, only data will be sent to PubSub.
 Components
 
 Up Square Grove IoT Dev Kit
