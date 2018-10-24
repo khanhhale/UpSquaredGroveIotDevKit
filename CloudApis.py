@@ -164,6 +164,70 @@ class CloudApis(Utility):
         print "Exception: %s, device not deleted" % e
         raise
 
+  def set_config(self,client, project_id, cloud_region, registry_id, device_id, version, config):
+    print('Set device configuration')
+    device_path = 'projects/{}/locations/{}/registries/{}/devices/{}'.format(
+            project_id, cloud_region, registry_id, device_id)
+
+    config_body = {
+        'versionToUpdate': version,
+        'binaryData': base64.urlsafe_b64encode(
+                config.encode('utf-8')).decode('ascii')
+    }
+
+    return client.projects(
+        ).locations().registries(
+        ).devices().modifyCloudToDeviceConfig(
+        name=device_path, body=config_body).execute()
+   # [END iot_set_device_config]
+
+  # [START iot_get_device_configs]
+  def get_config_versions(self, client, project_id, cloud_region, registry_id,
+        device_id):
+    """Lists versions of a device config in descending order (newest first)."""
+    registry_name = 'projects/{}/locations/{}/registries/{}'.format(
+        project_id, cloud_region, registry_id)
+
+    device_name = '{}/devices/{}'.format(registry_name, device_id)
+    devices = client.projects().locations().registries().devices()
+    configs = devices.configVersions().list(
+        name=device_name).execute().get(
+        'deviceConfigs', [])
+
+    for config in configs:
+        print('version: {}\n\tcloudUpdateTime: {}\n\t binaryData: {}'.format(
+            config.get('version'),
+            config.get('cloudUpdateTime'),
+            config.get('binaryData')))
+    return configs
+
+  def getDeviceConfig(self,client, project_id, cloud_region, registry_id, device_id):
+    """
+    Description: 
+       This function Delete the device.
+    Args: 
+       client: client service object
+       project_id: project id
+       cloud_region: google cloud region
+       registry_id: registry id
+       device_id: device id
+    Returns:
+       On success: response object
+       On failure: None or an exception will be thrown.
+    Raises:
+       An exception if the device cannot be deleted.
+    """ 
+
+    registry_name = 'projects/{}/locations/{}/registries/{}'.format(project_id, cloud_region, registry_id)
+    device_name = '{}/devices/{}'.format(registry_name, device_id)
+
+    try:
+        response = client.projects().locations().registries().devices().getConfig(name=device_name,localVersion=1).execute(num_retries=NUM_RETRIES)
+        return response
+    except Exception as e:
+        print "Exception: %s, device not deleted" % e
+        raise
+
   def get_full_subscription_name(self,project_id, subscription_id):
     """
     Description: 
@@ -328,6 +392,32 @@ class CloudApis(Utility):
     except Exception as e:
         print "Exception: %s, Cannot publish message" % e
         raise
+  
+  def getSubccriptionConfiguration(self, client, project_name, sub_id, max_num_of_messages):
+    """
+    Description: 
+       Pulls messages from a given subscription
+    Args: 
+       project_name: project id
+       sub_id: subscription id
+       max_num_of_messages: maximum number of messages will be pulled on each request
+    Returns:
+       On success: Pub/Sub message in JSON object
+       On failure: None or an exception will be thrown.
+    """
+    list_of_message_objects = []
+    subscription = self.get_full_subscription_name(project_name, sub_id)
+    resp = client.projects().subscriptions().get(
+                subscription=subscription).execute(
+                        num_retries=NUM_RETRIES)
+
+    try: 
+        print("device config: ",resp)  
+        return resp
+    except Exception as e:
+        print "Exception: %s, Cannot get configuration" % e
+        raise
+
 
   def create_jwt(self, project_id, private_key_file, algorithm):
     """
@@ -401,6 +491,28 @@ class CloudApis(Utility):
     except Exception as e:
         print "Exception: %s, cannot publish message" % e
         raise
+  def get_config(self, version, message_type, base_url, project_id, cloud_regionn
+,registry_id, device_id, private_key_file, algorithm):
+    jwt_token = self.create_jwt(project_id, private_key_file, algorithm)
+    headers = {
+            'authorization': 'Bearer {}'.format(jwt_token),
+            'content-type': 'application/json',
+            'cache-control': 'no-cache'
+    }
+
+    basepath = '{}/projects/{}/locations/{}/registries/{}/devices/{}/'
+    template = basepath + 'config?local_version={}'
+    config_url = template.format(
+        base_url, project_id, cloud_region, registry_id, device_id, version)
+
+    resp = requests.get(config_url, headers=headers)
+
+    if (resp.status_code != 200):
+        print('Error getting config: {}, retrying'.format(resp.status_code))
+        raise AssertionError('Not OK response: {}'.format(resp.status_code))
+
+    return resp
+
 
   def get_table_schema(self):
      """
